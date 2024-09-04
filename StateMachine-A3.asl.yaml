@@ -1,0 +1,32 @@
+Comment: State Machine Assignment3
+StartAt: CheckAction
+States:
+  CheckAction:
+    Type: Choice
+    Choices:
+      - Variable: $.action
+        StringEquals: sha256
+        Next: SHA256
+      - Variable: $.action
+        StringEquals: md5
+        Next: MD5
+      - Variable: $.action
+        StringEquals: bcrypt
+        Next: Bcrypt
+    Default: InvalidAction
+  SHA256:
+    Type: Task
+    Resource: arn:aws:lambda:us-east-1:081483530990:function:SHA256-A3
+    End: true
+  MD5:
+    Type: Task
+    Resource: arn:aws:lambda:us-east-1:081483530990:function:MD5-A3
+    End: true
+  Bcrypt:
+    Type: Task
+    Resource: arn:aws:lambda:us-east-1:081483530990:function:Bcrypt-A3
+    End: true
+  InvalidAction:
+    Type: Fail
+    Error: InvalidAction
+    Cause: Not a valid action.
